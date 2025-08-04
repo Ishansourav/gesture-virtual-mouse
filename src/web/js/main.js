@@ -1,49 +1,79 @@
-
-//user clicked button
+// Add event listener for button click
 document.getElementById("userInputButton").addEventListener("click", getUserInput, false);
-//user pressed enter '13'
+
+// Add event listener for Enter key press
 document.getElementById("userInput").addEventListener("keyup", function (event) {
-    if (event.keyCode === 13) {
-        //cancel the default action
+    if (event.key === "Enter") {
         event.preventDefault();
-        //process event
         getUserInput();
     }
 });
 
+// Expose Python-callable functions to JS
 eel.expose(addUserMsg);
 eel.expose(addAppMsg);
 
-
+/**
+ * Append user message to chat box
+ * @param {string} msg 
+ */
 function addUserMsg(msg) {
-    element = document.getElementById("messages");
-    element.innerHTML += '<div class="message from ready rtol">' + msg + '</div>';
-    element.scrollTop = element.scrollHeight - element.clientHeight - 15;
-    //add delay for animation to complete and then modify class to => "message from"
-    index = element.childElementCount - 1;
-    setTimeout(changeClass.bind(null, element, index, "message from"), 500);
+    const messages = document.getElementById("messages");
+    const messageDiv = document.createElement("div");
+    messageDiv.className = "message from ready rtol";
+    messageDiv.textContent = msg;
+    messages.appendChild(messageDiv);
+
+    scrollToBottom(messages);
+
+    const index = messages.childElementCount - 1;
+    setTimeout(() => changeClass(messages, index, "message from"), 500);
 }
 
+/**
+ * Append bot/app message to chat box
+ * @param {string} msg 
+ */
 function addAppMsg(msg) {
-    element = document.getElementById("messages");
-    element.innerHTML += '<div class="message to ready ltor">' + msg + '</div>';
-    element.scrollTop = element.scrollHeight - element.clientHeight - 15;
-    //add delay for animation to complete and then modify class to => "message to"
-    index = element.childElementCount - 1;
-    setTimeout(changeClass.bind(null, element, index, "message to"), 500);
+    const messages = document.getElementById("messages");
+    const messageDiv = document.createElement("div");
+    messageDiv.className = "message to ready ltor";
+    messageDiv.textContent = msg;
+    messages.appendChild(messageDiv);
+
+    scrollToBottom(messages);
+
+    const index = messages.childElementCount - 1;
+    setTimeout(() => changeClass(messages, index, "message to"), 500);
 }
 
+/**
+ * Change class after animation
+ */
 function changeClass(element, index, newClass) {
-    console.log(newClass +' '+ index);
-    element.children[index].className = newClass;
+    if (element.children[index]) {
+        element.children[index].className = newClass;
+    }
 }
 
-
+/**
+ * Send user input to backend
+ */
 function getUserInput() {
-    element = document.getElementById("userInput");
-    msg = element.value;
-    if (msg.length != 0) {
-        element.value = "";
-        eel.getUserInput(msg);
+    const inputElement = document.getElementById("userInput");
+    const msg = inputElement.value.trim();
+
+    if (msg.length > 0) {
+        inputElement.value = "";
+        eel.getUserInput(msg); // Call Python
     }
+
+    inputElement.focus(); // Refocus input after sending
+}
+
+/**
+ * Scroll chat to the bottom
+ */
+function scrollToBottom(container) {
+    container.scrollTop = container.scrollHeight;
 }
