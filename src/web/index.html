@@ -1,42 +1,144 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Proton</title>
+    
+    <!-- External Scripts and Styles -->
     <script type="text/javascript" src="/eel.js"></script>
     <link rel="stylesheet" type="text/css" href="css/jquery.convform.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-df4..." crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #f5f5f5;
+            padding: 10px;
+        }
+
+        .header-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .awesome {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin: 0;
+        }
+
+        .logo img {
+            vertical-align: middle;
+        }
+
+        .chat_icon {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #007bff;
+            color: white;
+            padding: 10px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .chat_box {
+            position: fixed;
+            bottom: 70px;
+            right: 20px;
+            background: #ffffff;
+            width: 300px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            display: none;
+            flex-direction: column;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+        }
+
+        #messages {
+            overflow-y: auto;
+            height: 400px;
+            padding: 10px;
+        }
+
+        #convForm {
+            display: flex;
+            align-items: center;
+            padding: 5px;
+            border-top: 1px solid #ccc;
+        }
+
+        #userInput {
+            flex-grow: 1;
+            padding: 5px;
+            height: 30px;
+        }
+
+        #userInputButton {
+            margin-left: 5px;
+            padding: 6px 10px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 3px;
+        }
+
+        #userInputButton:hover {
+            background-color: #218838;
+        }
+    </style>
 </head>
+
 <body>
-    <!-- header -->
+
+    <!-- Header -->
     <header>
-        <div class = "header-wrapper">
-          <p class="awesome">PROTON Welcomes you!</p>
-            <div class = "logo">
-                <img src= "images/icon.png"  width="35" height="33">
+        <div class="header-wrapper">
+            <p class="awesome">PROTON Welcomes you!</p>
+            <div class="logo">
+                <img src="images/icon.png" width="35" height="33" alt="Proton Logo">
             </div>
         </div>
     </header>
-    <!-- ChatBot -->
-    <div class="chat_icon">
+
+    <!-- Chat Icon -->
+    <div class="chat_icon" onclick="toggleChatBox()">
         <i class="fa fa-comments" aria-hidden="true"></i>
     </div>
 
-    <div class="chat_box">
-        
-            <div class="conv-form-wrapper" style="height:auto;">
-                <div id="messages" style="overflow-y:auto;height:400px;">
-                    </br></br>                    
-                </div>
-            </div>
-            
-            <div id="convForm" class="convFormDynamic" style="height:50px;position:absolute;left:10px;bottom:0px;margin:5px;">
-                <div class="options dragscroll"></div>
-                <input type="text" id="userInput" placeholder="Type Here" class="userInputDynamic" style="margin: 7px 7.575px 7px 10px; width: 219px; height: 24px;">
-                <button id="userInputButton" type="button" class="submit" style="margin-top:9px">▶</button>
-                <span class="clear"></span>
-            </div>
-
+    <!-- Chat Box -->
+    <div class="chat_box" id="chatBox">
+        <div class="conv-form-wrapper">
+            <div id="messages"></div>
         </div>
-    
-</body>
+        
+        <div id="convForm" class="convFormDynamic">
+            <input type="text" id="userInput" placeholder="Type a message..." class="userInputDynamic">
+            <button id="userInputButton" type="button">▶</button>
+        </div>
+    </div>
+
+    <!-- Fallback if JavaScript is disabled -->
+    <noscript>
+        <p style="color:red; text-align:center;">Please enable JavaScript to use this chat.</p>
+    </noscript>
+
+    <!-- JavaScript -->
     <script type="text/javascript" src="js/main.js"></script>
+    <script>
+        function toggleChatBox() {
+            const chatBox = document.getElementById('chatBox');
+            chatBox.style.display = chatBox.style.display === 'flex' ? 'none' : 'flex';
+        }
+    </script>
+
+</body>
 </html>
